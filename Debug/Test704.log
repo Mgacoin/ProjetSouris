@@ -1,0 +1,25 @@
+﻿La génération a démarré 31/07/2015 17:34:50.
+     1>Projet "C:\Users\admin\Documents\MATLAB\Test704.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _UNICODE /D UNICODE /D _AFXDLL /Gm /EHsc /RTC1 /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\Test704.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt Test704.cpp
+         Test704.cpp
+     1>c:\users\admin\documents\matlab\test704.cpp(2): warning C4005: '_AFXDLL' : redéfinition de macro
+                 arguments de ligne de commande : voir la définition précédente de '_AFXDLL'
+     1>c:\users\admin\documents\matlab\test704.cpp(2): warning C4603: '_AFXDLL' : la macro n'est pas définie ou la définition est différente après l'utilisation d'un en-tête précompilé
+                 Ajoutez la macro à l'en-tête précompilé au lieu de définir ici
+                 c:\users\admin\documents\matlab\test704.cpp(5) : utilisation d'un en-tête précompilé
+     1>c:\users\admin\documents\matlab\test704.cpp(3): warning C4603: '_tprintf' : la macro n'est pas définie ou la définition est différente après l'utilisation d'un en-tête précompilé
+                 Ajoutez la macro à l'en-tête précompilé au lieu de définir ici
+                 c:\users\admin\documents\matlab\test704.cpp(5) : utilisation d'un en-tête précompilé
+       Link:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\admin\Documents\MATLAB\Debug\Test704.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /manifestinput:"C:\Program Files\Microsoft Visual Studio 11.0\VC\Include\Manifest\dpiaware.manifest" /DEBUG /PDB:"C:\Users\admin\Documents\MATLAB\Debug\Test704.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\admin\Documents\MATLAB\Debug\Test704.lib" /MACHINE:X86 Debug\Test704.res
+         Debug\StdAfx.obj
+         Debug\Test704.obj
+         704IO.lib
+     1>Test704.obj : error LNK2019: symbole externe non rÚsolu _mexPrintf rÚfÚrencÚ dans la fonction _wmain
+     1>C:\Users\admin\Documents\MATLAB\Debug\Test704.exe : fatal error LNK1120: 1 externes non rÚsolus
+     1>Génération du projet "C:\Users\admin\Documents\MATLAB\Test704.vcxproj" terminée (Build cible(s)) -- ÉCHEC.
+
+ÉCHEC de la build.
+
+Temps écoulé 00:00:06.57

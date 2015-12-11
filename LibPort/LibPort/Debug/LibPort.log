@@ -1,0 +1,14 @@
+﻿La génération a démarré 10/07/2015 11:08:14.
+     1>Projet "C:\Users\admin\Documents\MATLAB\LibPort\LibPort\LibPort.vcxproj" sur le nœud 2 (build cible(s)).
+     1>PrepareForBuild:
+         Création du répertoire "C:\Users\admin\Documents\MATLAB\LibPort\Debug\".
+       InitializeBuildStatus:
+         Création de "Debug\LibPort.unsuccessfulbuild", car "AlwaysCreate" a été spécifié.
+       FinalizeBuildStatus:
+         Suppression du fichier "Debug\LibPort.unsuccessfulbuild".
+         Mise à jour de l'horodatage "Debug\LibPort.lastbuildstate".
+     1>Génération du projet "C:\Users\admin\Documents\MATLAB\LibPort\LibPort\LibPort.vcxproj" terminée (build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:00.67

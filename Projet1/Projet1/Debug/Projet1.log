@@ -1,0 +1,13 @@
+﻿La génération a démarré 21/07/2015 14:56:59.
+     1>Projet "C:\Users\admin\Documents\MATLAB\Projet1\Projet1\Projet1.vcxproj" sur le nœud 2 (Build cible(s)).
+     1>ClCompile:
+         C:\Program Files\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\..\..\Desktop\readTest.cpp
+         readTest.cpp
+     1>c:\users\admin\desktop\704io.h(8): error C2059: erreur de syntaxe : '__declspec(dllexport)'
+     1>c:\users\admin\desktop\704io.h(9): error C2059: erreur de syntaxe : '__declspec(dllexport)'
+     1>c:\users\admin\desktop\readtest.cpp(18): error C3861: 'PortRead' : identificateur introuvable
+     1>Génération du projet "C:\Users\admin\Documents\MATLAB\Projet1\Projet1\Projet1.vcxproj" terminée (Build cible(s)) -- ÉCHEC.
+
+ÉCHEC de la build.
+
+Temps écoulé 00:00:00.96

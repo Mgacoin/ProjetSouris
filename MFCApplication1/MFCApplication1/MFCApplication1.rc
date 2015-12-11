@@ -1,0 +1,582 @@
+//Script de ressources généré par Microsoft Visual C++.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Généré à partir de la ressource TEXTINCLUDE 2.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+#ifdef APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)\r\n"
+    "LANGUAGE 12, 1\r\n"
+    "#include ""res\\MFCApplication1.rc2""  // ressources non modifiées par Microsoft Visual C++\r\n"
+    "#include ""l.FRA\\afxres.rc""      // Composants standard\r\n"
+    "#include ""l.FRA\\afxprint.rc""    // ressources impression/aperçu avant impression\r\n"
+    "#if !defined(_AFXDLL)\r\n"
+    "#include ""l.FRA\\afxribbon.rc""        // ressources de barre de contrôles et de ruban MFC\r\n"
+    "#endif\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icône
+//
+
+// L'icône avec la valeur d'ID la plus basse est placée en premier afin que l'icône d'application
+// soit cohérente sur tous les systèmes.
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+LANGUAGE 12, 1
+IDR_MAINFRAME           ICON         "res\\MFCApplication1.ico"
+IDR_MFCApplication1TYPE         ICON         "res\\MFCApplication1Doc.ico"
+#endif
+IDI_FILE_VIEW           ICON         "res\\file_view.ico"
+IDI_FILE_VIEW_HC        ICON         "res\\file_view_hc.ico"
+IDI_CLASS_VIEW          ICON         "res\\class_view.ico"
+IDI_CLASS_VIEW_HC       ICON         "res\\class_view_hc.ico"
+IDI_OUTPUT_WND          ICON         "res\\output_wnd.ico"
+IDI_OUTPUT_WND_HC       ICON         "res\\output_wnd_hc.ico"
+IDI_PROPERTIES_WND      ICON         "res\\properties_wnd.ico"
+IDI_PROPERTIES_WND_HC   ICON         "res\\properties_wnd_hc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Image bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDR_MAINFRAME_256       BITMAP                  "res\\Toolbar256.bmp"
+IDR_SORT                BITMAP                  "res\\sort.bmp"
+IDB_SORT_24             BITMAP                  "res\\sort_hc.bmp"
+IDB_FILE_VIEW           BITMAP                  "res\\fileview.bmp"
+IDB_FILE_VIEW_24        BITMAP                  "res\\fileview_hc.bmp"
+IDB_CLASS_VIEW          BITMAP                  "res\\classview.bmp"
+IDB_CLASS_VIEW_24       BITMAP                  "res\\classview_hc.bmp"
+IDR_EXPLORER            BITMAP                  "res\\explorer.bmp"
+IDB_EXPLORER_24         BITMAP                  "res\\explorer_hc.bmp"
+IDR_MENU_IMAGES         BITMAP                  "res\\menuimages.bmp"
+IDB_MENU_IMAGES_24      BITMAP                  "res\\menuimages_hc.bmp"
+IDR_PROPERTIES          BITMAP                  "res\\properties.bmp"
+IDB_PROPERTIES_HC       BITMAP                  "res\\properties_hc.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Barre d'outils
+//
+
+IDR_MAINFRAME TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+IDR_MAINFRAME_256 TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+
+IDR_SORT TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_SORT_MENU
+    BUTTON      ID_NEW_FOLDER
+END
+
+IDR_EXPLORER TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_PROPERTIES
+END
+
+IDR_MENU_IMAGES TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_WINDOW_MANAGER
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_HORZ
+    BUTTON      ID_TOOLS_MACRO
+    BUTTON      ID_SORTING_SORTALPHABETIC
+    BUTTON      ID_SORTING_SORTBYTYPE
+    BUTTON      ID_SORTING_SORTBYACCESS
+    BUTTON      ID_SORTING_GROUPBYTYPE
+END
+
+IDR_PROPERTIES TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_EXPAND_ALL
+    BUTTON      ID_SORTPROPERTIES
+    BUTTON      ID_PROPERTIES1
+    BUTTON      ID_PROPERTIES2
+END
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+LANGUAGE 12, 1
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&Fichier"
+    BEGIN
+        MENUITEM "&Nouveau\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Fermer",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "&Configuration de l'impression...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",                 ID_FILE_MRU_FILE1,GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                       ID_APP_EXIT
+    END
+    POPUP "&Affichage"
+    BEGIN
+        POPUP "&Barres d'outils et fenêtres d'ancrage"
+        BEGIN
+            MENUITEM "<espace réservé>",           ID_VIEW_TOOLBAR
+        END
+        MENUITEM "&barre d'état",                 ID_VIEW_STATUS_BAR
+        POPUP "Aspe&ct de l'application"
+        BEGIN
+            MENUITEM "Windows &2000",           ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office &XP",              ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "&Windows XP",             ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 200&3",            ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 200&5",     ID_VIEW_APPLOOK_VS_2005
+            MENUITEM "Visual Studio 200&8",     ID_VIEW_APPLOOK_VS_2008
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "Style &bleu",         ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "Style &noir",        ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "Style a&rgenté",       ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "Style cya&n",         ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Aide"
+    BEGIN
+        MENUITEM "&À propos de MFCApplication1...",          ID_APP_ABOUT
+    END
+END
+
+IDR_MFCApplication1TYPE MENU
+BEGIN
+    POPUP "&Fichier"
+    BEGIN
+        MENUITEM "&Nouveau\tCtrl+N",                ID_FILE_NEW
+        MENUITEM "&Ouvrir...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Fermer",                      ID_FILE_CLOSE
+        MENUITEM "&Enregistrer\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Enregistrer &sous...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "&Imprimer...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "&Aperçu avant impression",              ID_FILE_PRINT_PREVIEW
+        MENUITEM "&Configuration de l'impression...",             ID_FILE_PRINT_SETUP
+        MENUITEM SEPARATOR
+        MENUITEM "Fichier récent",                 ID_FILE_MRU_FILE1,GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Quitter",                       ID_APP_EXIT
+    END
+    POPUP "&Edition"
+    BEGIN
+        MENUITEM "&Annuler\tCtrl+Z",               ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "&Couper\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "C&opier\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "Co&ller\tCtrl+V",              ID_EDIT_PASTE
+    END
+    POPUP "&Affichage"
+    BEGIN
+        POPUP "&Barres d'outils et fenêtres d'ancrage"
+        BEGIN
+            MENUITEM "<espace réservé>",           ID_VIEW_TOOLBAR
+        END
+        MENUITEM "&barre d'état",                 ID_VIEW_STATUS_BAR
+        POPUP "Aspe&ct de l'application"
+        BEGIN
+            MENUITEM "Windows &2000",           ID_VIEW_APPLOOK_WIN_2000
+            MENUITEM "Office &XP",              ID_VIEW_APPLOOK_OFF_XP
+            MENUITEM "&Windows XP",             ID_VIEW_APPLOOK_WIN_XP
+            MENUITEM "Office 200&3",            ID_VIEW_APPLOOK_OFF_2003
+            MENUITEM "Visual Studio 200&5",     ID_VIEW_APPLOOK_VS_2005
+            MENUITEM "Visual Studio 200&8",     ID_VIEW_APPLOOK_VS_2008
+            POPUP "Office 200&7"
+            BEGIN
+                MENUITEM "Style &bleu",         ID_VIEW_APPLOOK_OFF_2007_BLUE
+                MENUITEM "Style &noir",        ID_VIEW_APPLOOK_OFF_2007_BLACK
+                MENUITEM "Style a&rgenté",       ID_VIEW_APPLOOK_OFF_2007_SILVER
+                MENUITEM "Style cya&n",         ID_VIEW_APPLOOK_OFF_2007_AQUA
+            END
+        END
+    END
+    POPUP "&Fenêtre"
+    BEGIN
+        MENUITEM "&Nouvelle fenêtre",                 ID_WINDOW_NEW
+    END
+    POPUP "&Aide"
+    BEGIN
+        MENUITEM "&À propos de MFCApplication1...",          ID_APP_ABOUT
+    END
+END
+
+
+
+
+IDR_POPUP_EDIT MENU
+BEGIN
+	POPUP "Edition"
+	BEGIN
+		MENUITEM "&Couper\tCtrl+X",            ID_EDIT_CUT
+		MENUITEM "C&opier\tCtrl+C",           ID_EDIT_COPY
+		MENUITEM "Co&ller\tCtrl+V",          ID_EDIT_PASTE
+    END
+END
+
+IDR_POPUP_SORT MENU
+BEGIN
+    POPUP "Tri"
+    BEGIN
+        MENUITEM "Tr&ier par ordre alphabétique",         ID_SORTING_SORTALPHABETIC
+        MENUITEM "Tri&er par type",               ID_SORTING_SORTBYTYPE
+        MENUITEM "Trier par a&ccès",             ID_SORTING_SORTBYACCESS
+        MENUITEM "&Grouper par type",              ID_SORTING_GROUPBYTYPE
+    END
+END
+
+IDR_POPUP_EXPLORER MENU
+BEGIN
+    POPUP "Explorateur"
+    BEGIN
+        MENUITEM "&Ouvrir",                       ID_OPEN
+        MENUITEM "Ou&vrir avec...",              ID_OPEN_WITH
+        MENUITEM SEPARATOR
+        MENUITEM "&Compiler",                    ID_DUMMY_COMPILE
+        MENUITEM SEPARATOR
+        MENUITEM "&Couper\tCtrl+X",                ID_EDIT_CUT
+        MENUITEM "C&opier\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM "Supp&rimer",                     ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "Pr&opriétés...",              ID_PROPERTIES
+    END
+END
+
+IDR_OUTPUT_POPUP MENU
+BEGIN
+    POPUP "Fenêtre contextuelle"
+    BEGIN
+        MENUITEM "&Copier",                       ID_EDIT_COPY
+        MENUITEM "Effa&cer",                      ID_EDIT_CLEAR
+        MENUITEM SEPARATOR
+        MENUITEM "&Masquer",                       ID_VIEW_OUTPUTWND
+    END
+END
+
+IDR_HELP_MENU MENU 
+BEGIN
+    MENUITEM "&À propos de MFCApplication1...",          ID_APP_ABOUT
+END
+
+IDR_THEME_MENU MENU
+BEGIN
+    MENUITEM "Office 2007 (Style &bleu)",       ID_VIEW_APPLOOK_OFF_2007_BLUE
+    MENUITEM "Office 2007 (Style &noir)",      ID_VIEW_APPLOOK_OFF_2007_BLACK
+    MENUITEM "Office 2007 (Style a&rgenté)",     ID_VIEW_APPLOOK_OFF_2007_SILVER
+    MENUITEM "Office 2007 (Style cya&n)",       ID_VIEW_APPLOOK_OFF_2007_AQUA
+    MENUITEM "Win&dows 7",                      ID_VIEW_APPLOOK_WINDOWS_7
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accélérateur
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY,CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY,CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY,CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY,CONTROL
+	"e",            ID_EDIT_UNDO,           VIRTKEY,CONTROL
+	"X",            ID_EDIT_CUT,            VIRTKEY,CONTROL
+	"P",            ID_EDIT_COPY,           VIRTKEY,CONTROL
+	"V",            ID_EDIT_PASTE,          VIRTKEY,CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY,ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY,SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY,CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY,SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY
+    VK_F6,          ID_PREV_PANE,           VIRTKEY,SHIFT
+END
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Boîte de dialogue
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "À propos de MFCApplication1"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "MFCApplication1, version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2015",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "OK",IDOK,113,41,50,14,WS_GROUP
+END
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO     VERSIONINFO
+  FILEVERSION       1,0,0,1
+  PRODUCTVERSION    1,0,0,1
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040c04B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Nom de la société>"
+            VALUE "FileDescription", "MFCApplication1"
+            VALUE "FileVersion",     "1.0.0.1"
+            VALUE "InternalName",    "MFCApplication1.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Nom de la société>. Tous droits réservés."
+            VALUE "OriginalFilename","MFCApplication1.exe"
+            VALUE "ProductName", "TODO: <Nom du produit>"
+            VALUE "ProductVersion",  "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x040c, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Table de chaînes
+//
+
+STRINGTABLE
+BEGIN
+    IDP_OLE_INIT_FAILED       "Échec de l'initialisation d'OLE. Assurez-vous que vous utilisez la bonne version des bibliothèques OLE."
+END
+STRINGTABLE
+BEGIN
+// Pour les applications cibles non-Macintosh, les deux sous-chaînes supplémentaires sont supprimées
+    IDR_MAINFRAME           "MFCApplication1"
+    IDR_MFCApplication1TYPE         "\nMFCApplication1\nMFCApplication1\n\n\nMFCApplication1.Document\nMFCApplication1.Document"
+END
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "MFCApplication1"
+    AFX_IDS_IDLEMESSAGE     "Prêt"
+END
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Crée un nouveau document\nNouveau"
+    ID_FILE_OPEN            "Ouvre un document existant\nOuvrir"
+    ID_FILE_CLOSE           "Ferme le document actif\nFermer"
+    ID_FILE_SAVE            "Enregistre le document actif\nEnregistrer"
+    ID_FILE_SAVE_AS         "Enregistre le document actif sous un nouveau nom\nEnregistrer sous"
+    ID_FILE_PAGE_SETUP      "Modifie les options d'impression\nMise en page"
+    ID_FILE_PRINT_SETUP     "Modifie les options d'impression et celles de l'imprimante\nConfiguration de l'impression"
+    ID_FILE_PRINT_DIRECT    "Imprimer le document actif à l'aide des options actuelles\nImprimer rapidement"
+    ID_FILE_PRINT           "Imprime le document actif\nImprimer"
+    ID_FILE_PRINT_PREVIEW   "Affiche les pages entières\nAperçu avant impression"
+    ID_APP_ABOUT            "Affiche des informations sur le programme, le numéro de version et le copyright\nÀ propos de"
+    ID_APP_EXIT             "Quitte l'application et demande si les documents doivent être enregistrés\nQuitter"
+    ID_FILE_MRU_FILE1       "Ouvre ce document"
+    ID_FILE_MRU_FILE2       "Ouvre ce document"
+    ID_FILE_MRU_FILE3       "Ouvre ce document"
+    ID_FILE_MRU_FILE4       "Ouvre ce document"
+    ID_FILE_MRU_FILE5       "Ouvre ce document"
+    ID_FILE_MRU_FILE6       "Ouvre ce document"
+    ID_FILE_MRU_FILE7       "Ouvre ce document"
+    ID_FILE_MRU_FILE8       "Ouvre ce document"
+    ID_FILE_MRU_FILE9       "Ouvre ce document"
+    ID_FILE_MRU_FILE10      "Ouvre ce document"
+    ID_FILE_MRU_FILE11      "Ouvre ce document"
+    ID_FILE_MRU_FILE12      "Ouvre ce document"
+    ID_FILE_MRU_FILE13      "Ouvre ce document"
+    ID_FILE_MRU_FILE14      "Ouvre ce document"
+    ID_FILE_MRU_FILE15      "Ouvre ce document"
+    ID_FILE_MRU_FILE16      "Ouvre ce document"
+    ID_NEXT_PANE            "Bascule vers le volet de fenêtre suivant\nVolet suivant"
+    ID_PREV_PANE            "Bascule vers le volet de fenêtre précédent\nVolet précédent"
+    ID_WINDOW_NEW           "Ouvre une autre fenêtre pour le document actif\nNouvelle fenêtre"
+    ID_WINDOW_ARRANGE       "Réorganise les icônes en bas de la fenêtre\nRéorganiser les icônes"
+    ID_WINDOW_CASCADE       "Réorganise les fenêtres en cascade\nCascade"
+    ID_WINDOW_TILE_HORZ     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_TILE_VERT     "Réorganise les fenêtres en une mosaïque\nMosaïque"
+    ID_WINDOW_SPLIT         "Fractionne la fenêtre active en volets\nFractionner"
+    ID_EDIT_CLEAR           "Efface la sélection\nEffacer"
+    ID_EDIT_CLEAR_ALL       "Efface tout\nEffacer tout"
+    ID_EDIT_COPY            "Copie la sélection et la place dans le Presse-papiers\nCopier"
+    ID_EDIT_CUT             "Coupe la sélection et la place dans le Presse-papiers\nCouper"
+    ID_EDIT_FIND            "Recherche le texte spécifié\nRechercher"
+    ID_EDIT_PASTE           "Insère le contenu du Presse-papiers\nColler"
+    ID_EDIT_REPEAT          "Répète la dernière action\nRépéter"
+    ID_EDIT_REPLACE         "Remplace un texte spécifié par un texte différent\nRemplacer"
+    ID_EDIT_SELECT_ALL      "Sélectionne l'intégralité du document\nSélectionner tout"
+    ID_EDIT_UNDO            "Annule la dernière action\nAnnuler"
+    ID_EDIT_REDO            "Rétablit l'action précédemment annulée\nRétablir"
+    ID_VIEW_STATUS_BAR      "Affiche ou masque la barre d'état\nBarre d'état"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Modifie la taille de la fenêtre"
+    AFX_IDS_SCMOVE          "Modifie la position de la fenêtre"
+    AFX_IDS_SCMINIMIZE      "Réduit la fenêtre en icône"
+    AFX_IDS_SCMAXIMIZE      "Affiche la fenêtre en plein écran"
+    AFX_IDS_SCNEXTWINDOW    "Bascule vers la fenêtre de document suivante"
+    AFX_IDS_SCPREVWINDOW    "Bascule vers la fenêtre de document précédente"
+    AFX_IDS_SCCLOSE         "Ferme la fenêtre active et demande si les documents doivent être enregistrés"
+    AFX_IDS_SCRESTORE       "Restaure la fenêtre à sa taille normale"
+    AFX_IDS_SCTASKLIST      "Active la liste des tâches"
+    AFX_IDS_MDICHILD        "Active cette fenêtre"
+    AFX_IDS_PREVIEW_CLOSE   "Ferme le mode Aperçu avant impression\nFermer l'aperçu"
+END
+
+
+STRINGTABLE
+BEGIN
+    IDS_STATUS_PANE1        "Volet 1"
+    IDS_STATUS_PANE2        "Volet 2"
+    IDS_TOOLBAR_STANDARD    "Standard"
+    IDS_TOOLBAR_CUSTOMIZE   "Personnaliser..."
+    ID_WINDOW_MANAGER       "&Fenêtres..."
+    IDS_FILE_VIEW           "Affichage des fichiers"
+    IDS_CLASS_VIEW          "Affichage de classes"
+    IDS_EXPLORER            "Explorateur"
+    IDS_OUTPUT_WND          "Sortie"
+    IDS_BUILD_TAB           "Build"
+    IDS_DEBUG_TAB           "Déboguer"
+    IDS_FIND_TAB            "Rechercher"
+    IDS_PROPERTIES_WND      "Propriétés"
+    IDS_EDIT_MENU           "Edition"
+END
+#endif
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Généré à partir de la ressource TEXTINCLUDE 3.
+//
+
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+LANGUAGE 12, 1
+#include "res\\MFCApplication1.rc2"  // ressources non modifiées par Microsoft Visual C++
+#include "l.FRA\\afxres.rc"      // Composants standard
+#include "l.FRA\\afxprint.rc"  // ressources impression/aperçu avant impression
+#if !defined(_AFXDLL)
+#include "l.FRA\\afxribbon.rc"        // Ressources de barre de contrôles et de ruban MFC
+#endif
+#endif
+#endif    // non APSTUDIO_INVOKED
