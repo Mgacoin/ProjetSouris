@@ -5,7 +5,7 @@ function varargout = firstWindow(varargin)
 % header = ('C:\Windows\System32\704IO.h')
 % loadlibrary(dll,header)
 
-hfile =(fullfile(matlabroot, 'lib','win32', '704IO.h'))
+hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
 loadlibrary('704IO',hfile,'alias','libPort')
 
 % Begin initialization code - DO NOT EDIT

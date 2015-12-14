@@ -2,7 +2,7 @@ function m = luminance (t)
 %function [pos, dirPos] = luminance () % to get lateralization graph
 %--- Library declaration ---
 %-- For portWrite --
-hfile =(fullfile(matlabroot, 'lib','win32', '704IO.h'))
+hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
 loadlibrary('704IO',hfile,'alias','lib')
 
 %-- For portRead --
@@ -47,7 +47,7 @@ while(1)
     switch state
         case 'start'
             % mainTimer = clock; % starts main timer
-            state = 'stage3';
+            state = 'stage1'; 
             stateNum = 0;
              t.Data = { 'Session timer' nbPelletRetrievalP1 'nothing' ; 'Current state' stateNum 'nothing';}% The first value is the first column, the second value is in the second column... semicolons indicate a new row 
             % fprintf(logfile_fid,'%s\t%s\n',datestr(clock, 'dd-mmm-YYYY HH:MM:SS.FFF'),'Entering Phase 1');
@@ -78,7 +78,7 @@ while(1)
                 %                     rightLeverVal = 32;
                 %                 end
                 
-                pause(5); % PBR: le programme attend 60 secondes
+                pause(5); % PBR: le programme attend 5 secondes pour continuer
                 calllib('lib','PortWrite',1,792,0,pelletVal);%Activates the output
                 calllib('lib','PortWrite',1,792,0,0);%Deactivates the output
                 
@@ -89,7 +89,7 @@ while(1)
                     nosePoke = 0;
                 end
                 if nosePoke == 1
-                    %if box == 1%nosePoke est la valeur récupée par mex
+                    %if box == 1  %nosePoke est la valeur récupérée par mex
                     nbPelletRetrievalP1 = nbPelletRetrievalP1 + 1
                     % elseif box == 2
                     %     nbPelletRetrievalBox2 = nbPelletRetrievalBox2 + 1
