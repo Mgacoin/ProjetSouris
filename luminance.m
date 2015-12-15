@@ -43,13 +43,13 @@ underState5 = 'US5S1';
 
 %--- State machine ---
 while(1)
-    %pause(0.1);	% wait between each cycle >> pas forcément besoin car ralenti le programme
+    %pause(0.1);	% wait between each cycle >> ralenti le programme
     switch state
         case 'start'
             % mainTimer = clock; % starts main timer
-            state = 'stage1'; 
+            state = 'stage1';
             stateNum = 0;
-             t.Data = { 'Session timer' nbPelletRetrievalP1 'nothing' ; 'Current state' stateNum 'nothing';}% The first value is the first column, the second value is in the second column... semicolons indicate a new row 
+            t.Data = { 'Session timer' nbPelletRetrievalP1 'nothing' ; 'Current state' stateNum 'nothing';}% The first value is the first column, the second value is in the second column... semicolons indicate a new row
             % fprintf(logfile_fid,'%s\t%s\n',datestr(clock, 'dd-mmm-YYYY HH:MM:SS.FFF'),'Entering Phase 1');
         case 'stage1'
             stateNum = 1;
@@ -84,7 +84,7 @@ while(1)
                 
                 myVal = double(Test704(portVal, rackVal, offsetVal)) %où les valeurs sont modifiés dans le if box == ...
                 if myVal == nosePokeVal
-                    nosePoke = 1;
+                    nosePoke = 1; %to know how much pellet retrieval we have
                 else
                     nosePoke = 0;
                 end
@@ -95,20 +95,21 @@ while(1)
                     %     nbPelletRetrievalBox2 = nbPelletRetrievalBox2 + 1
                     % end
                 end
+                
                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing';...
                     'Current state' stateNum 'nothing' 'State final durationP1' 'duration here' 'nothing';...
                     'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing'};
-                drawnow
+                drawnow %to execute everything now
             end
-           % nbPelletRetrieval = 0; %A ce stade, nbPelletRetrievalP1 = 5
-            while nbPelletRetrievalP1 < 10 
+            % nbPelletRetrieval = 0; %A ce stade, nbPelletRetrievalP1 = 5
+            while nbPelletRetrievalP1 < 10
                 myVal = double(Test704(portVal,rackVal,offsetVal))
                 if myVal == nosePokeVal
                     nosePoke = 1;
                 else
                     nosePoke = 0;
                 end
-                if nosePoke == 1
+                if nosePoke == 1 %Dois-t'on différencier ces deux actions?
                     nbPelletRetrievalP1 = nbPelletRetrievalP1 + 1;
                     calllib('lib','PortWrite',1,792,0,pelletVal);
                     calllib('lib','PortWrite',1,792,0,0);
@@ -120,7 +121,6 @@ while(1)
             end
             state = 'stage2';
             
-			while nb
         case 'stage2'
             %--- Stage 2 ---
             stateNum = 2;
@@ -129,7 +129,7 @@ while(1)
             leverTimeP2 = 0;
             tempoP2 = 0;
             timeOutP2 = 0;
-            while nbPelletRetrievalP2<10 
+            while nbPelletRetrievalP2<10
                 myVal = double(Test704(portVal, rackVal, offsetVal))
                 if myVal == leftLeverVal
                     leftLever = 1;
@@ -142,56 +142,57 @@ while(1)
                 if leftLever == 1| rightLever == 1 % NB : il faut que ça blink !
                     leverTimeP2 = leverTimeP2 + 1;
                     if leverTimeP2 == 1
-                        %calllib('lib','PortWrite',1,792,0,pelletVal); % pellet dispensation
+                        calllib('lib','PortWrite',1,792,0,pelletVal); % pellet dispensation
                         calllib('lib','PortWrite',1,792,0,0);
                     end
-                    tic
+                    tic %on démarre le timer pour connaitre de temps de récup
                     pushTime = 0; % To avoid nbPelletRetrieval to be incremented when nothing is retrieved (in case of nose pokes)
                 end
-                    %Initialization of left & right levers
-                    leftLever = 0;
-                    rightLever = 0;
-                    
-                    if myVal == nosePokeVal
-                        nosePoke = 1;
-                    else
-                        nosePoke = 0;
+                %Initialization of left & right levers
+                leftLever = 0;
+                rightLever = 0;
+                
+                if myVal == nosePokeVal
+                    nosePoke = 1;
+                else
+                    nosePoke = 0;
+                end
+                if nosePoke == 1 % this condition cannot be included in the previous one
+                    pushTime = pushTime + 1;
+                    toc
+                    tempoP2 = toc % measures the time elapsed between lever's pushing and nose poke
+                    if tempoP2 <15 && pushTime == 1
+                        nbPelletRetrievalP2 = nbPelletRetrievalP2 + 1
+                        nbPelletRetrievalP2
+                    elseif tempoP2 > 15 && pushTime == 1
+                        timeOutP2 = tempoP2; %In case of time out, this variable is created to be displayed
+                        nbPelletRetrievalP2 = 0;
                     end
-                    if nosePoke == 1 % this condition cannot be included in the previous one
-                        pushTime = pushTime + 1;
-                        toc
-                        tempoP2 = toc % measures the time elapsed between lever's pushing and nose poke
-                        if tempoP2 <15 && pushTime == 1
-                            nbPelletRetrievalP2 = nbPelletRetrievalP2 + 1 
-                            nbPelletRetrievalP2
-                        elseif tempoP2 > 15 && pushTime == 1
-                            timeOutP2 = tempoP2; %In case of time out, this variable is created to be displayed
-                            nbPelletRetrievalP2 = 0; % NB : il faut remettre à 0 si pas pris dans les temps !
-                        end
-                        leverTime = 0;
-                    end
-                     t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 tempoP2;...
-                         'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' leverTimeP2 'nothing';...
-                         'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)' nbPelletRetrievalP1 timeOutP2;...
-                         'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';}
-                    
-                     %save('testSave1.mat','nbPelletRetrievalP2','-append') %The matfile. "-append" is to add a new variable to the matfile
-                     %m = matfile('testSave1.mat')
-                     drawnow
-            pause(1)
+                    leverTime = 0;
+                end
+                t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 tempoP2;...
+                    'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' leverTimeP2 'nothing';...
+                    'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)' nbPelletRetrievalP1 timeOutP2;...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';}
+                
+                %save('testSave1.mat','nbPelletRetrievalP2','-append') %The matfile. "-append" is to add a new variable to the matfile
+                %m = matfile('testSave1.mat')
+                drawnow
+                pause(1)
             end
             state = 'stage3';
             
         case 'stage3'
             %--- Stage 3 ---
             stateNum = 3;
-            tempo = 0;
+            tempoP3 = 0;
+            tempo2P3 = 0;
             pushTime = 0;
-            listRand = randomizer() % NB : fonction erronée comme on en a parlé !! il faut que le pseudo-random se fasse sur chaque essai et non a priori
-            nbPelletRetrievalP3 = 1; % Beginning at 1 gives a positive value to randomizer()
-            while nbPelletRetrievalP3 < 11
-                pause(1)% Delay of 5secs  NB : oui mais dans ce cas met 5 et pas 1
-                
+            bothScreensOnVal = leftScreenVal + rightScreenVal; % To switch on both screens simultaneously
+            %listRand = randomizer() % NB : fonction erronée comme on en a parlé !! il faut que le pseudo-random se fasse sur chaque essai et non a priori
+            nbPelletRetrievalP3 = 0;
+            while nbPelletRetrievalP3 < 10
+                pause(5)% Delay of 5secs
                 switch underState3 % So the portWrite are not mistaken
                     case 'US3S1'
                         myVal = double(Test704(portVal, rackVal, offsetVal))
@@ -201,8 +202,9 @@ while(1)
                             nosePoke = 0;
                         end
                         if nosePoke == 1
-                            writeVal = listRand(([nbPelletRetrievalP3])) % The randomised value of the PortWrite %NB: Les deux écrans s'allument à ce stade.
-                            calllib('lib','PortWrite',1,792,0,writeVal); %ARDUINO on %A REACTIVER !!!!! %NB : les deux écrans blanc ici donc pourquoi un seul output ??
+                            %writeVal = listRand(([nbPelletRetrievalP3])) % The randomised value of the PortWrite %NB: Les deux écrans s'allument à ce stade.
+                            %calllib('lib','PortWrite',1,792,0,writeVal); %ARDUINO on %A REACTIVER
+                            calllib('lib','PortWrite',1,792,0,bothScreensOnVal); % Both screens switch on
                             tic
                             underState3 = 'US3S2';
                         end
@@ -219,8 +221,9 @@ while(1)
                         if leftLever == 1 | rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
                             toc
                             tempoP3 = toc
-                            tic
+                            %tic
                             if tempoP3 < 60
+                                tic
                                 underState3 = 'US3S3'
                                 pushTime =0;
                             else
@@ -255,52 +258,113 @@ while(1)
                         end
                 end
                 
-%                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 'tempoP2' 'Last Screen on (1:Left, 2 Right)P3' 'nothing' 'nothing';...
-%                          'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' 'leverTimeP2' 'nothing' 'Lever pressP3' 'leverTimeP3' 'time of answer';...
-%                          'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P2' nbPelletRetrievalP1 'timeOutP2' 'Time out leverP3' 'nothing' 'nothing';...
-%                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP2' 'state duration here' 'nothing' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3';...
-%                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-out' 'time out' 'nothing';...
-%                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P3' 'nothing' 'nothing';...
-%                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing';};
+                %                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 'tempoP2' 'Last Screen on (1:Left, 2 Right)P3' 'nothing' 'nothing';...
+                %                          'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' 'leverTimeP2' 'nothing' 'Lever pressP3' 'leverTimeP3' 'time of answer';...
+                %                          'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P2' nbPelletRetrievalP1 'timeOutP2' 'Time out leverP3' 'nothing' 'nothing';...
+                %                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP2' 'state duration here' 'nothing' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3';...
+                %                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-out' 'time out' 'nothing';...
+                %                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P3' 'nothing' 'nothing';...
+                %                          'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing';};
                 t.Data = { 'Session timer(h)' '356' '' 'Pellet retrievedP1' '10' '5secs' 'Pellet retrievedP2' '10' '10secs' 'Last Screen on (1:Left, 2 Right)P3' '1' '' 'Running reversal? (1:Yes, 0:No)' '1' '';...
-                     'Current state' stateNum '' 'State final duration P1' '11min' '' 'Lever pressP2' '310' '35secs' 'Lever pressP3' '978' '43secs' 'Reversal done' '0' '';...
-                     'State timer(min)' '20' '' '' '' '' 'Total pellet retrieved (w/ time out)P2' '43' '364secs' 'Time out leverP3' 'time out' '' 'Successful trials/40' '0' '0';...
-                     '' '' '' '' '' '' 'State final durationP2' 'state duration here' '' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3' 'Total trials' 'totalTrials' '';...
-                     '' '' '' '' '' '' '' '' '' 'Pellet retrieval time-out' 'time out' '' 'Last Screen on (1:Left, 2 Right)P4' 'screen' '';...
-                     '' '' '' '' '' '' '' '' '' 'Total pellet retrieved (w/ time out)P3' 'total' 'time last one' 'Lever pressP4' 'leverTimeP4' 'time of answer';...
-                     '' '' '' '' '' '' '' '' '' 'State final durationP3' 'state duration here' '' 'Time out leverP4' 'timeOut' '';...
-                     '' '' '' '' '' '' '' '' '' '' '' '' 'Pellet retrieval time-outP4' 'time out' '';...
-                     '' '' '' '' '' '' '' '' '' '' '' '' 'Pellet retrieved' 'nbPelletRetrievalP4' 'time last pellet';...
-                     '' '' '' '' '' '' '' '' '' '' '' '' 'Total pellet retrieved (w/ time out)P4' 'nbPelletRetrievalP4' 'timeOutP4';...
-                     '' '' '' '' '' '' '' '' '' '' '' '' 'State final durationP3' 'state duration here' ''};  
-drawnow
+                    'Current state' stateNum '' 'State final duration P1' '11min' '' 'Lever pressP2' '310' '35secs' 'Lever pressP3' '978' '43secs' 'Reversal done' '0' '';...
+                    'State timer(min)' '20' '' '' '' '' 'Total pellet retrieved (w/ time out)P2' '43' '364secs' 'Time out leverP3' 'time out' '' 'Successful trials/40' '0' '0';...
+                    '' '' '' '' '' '' 'State final durationP2' 'state duration here' '' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3' 'Total trials' 'totalTrials' '';...
+                    '' '' '' '' '' '' '' '' '' 'Pellet retrieval time-out' 'time out' '' 'Last Screen on (1:Left, 2 Right)P4' 'screen' '';...
+                    '' '' '' '' '' '' '' '' '' 'Total pellet retrieved (w/ time out)P3' 'total' 'time last one' 'Lever pressP4' 'leverTimeP4' 'time of answer';...
+                    '' '' '' '' '' '' '' '' '' 'State final durationP3' 'state duration here' '' 'Time out leverP4' 'timeOut' '';...
+                    '' '' '' '' '' '' '' '' '' '' '' '' 'Pellet retrieval time-outP4' 'time out' '';...
+                    '' '' '' '' '' '' '' '' '' '' '' '' 'Pellet retrieved' 'nbPelletRetrievalP4' 'time last pellet';...
+                    '' '' '' '' '' '' '' '' '' '' '' '' 'Total pellet retrieved (w/ time out)P4' 'nbPelletRetrievalP4' 'timeOutP4';...
+                    '' '' '' '' '' '' '' '' '' '' '' '' 'State final durationP3' 'state duration here' ''};
+                drawnow
             end
             state = 'stage4';
             
         case 'stage4'
-            %--- Stage 4 --- 
+            %--- Stage 4 ---
             stateNum = 4;
-            listRand = randomizer();
-            y = 1;
+            correctTrial = 0;
+            tempoP5 = 0;
+            while correctTrial < 3
+                pause(5) %Delay of 5secs
+                switch underState5
+                    case 'US5S1'
+                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        if myVal == nosePokevAL
+                            nosePoke = 1;
+                        else
+                            nosePoke = 0;
+                        end
+                        if nosePoke == 1
+                            % POUR AMANDINE: Corrective trial
+                            calllib('lib','PortWrite', 1, 792, 0, screenOnVal);
+                            tic
+                            underState5 = 'US5S2';
+                        end
+                        nosePoke = 0;
+                    case 'US5S2'
+                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        if myVal == leftLeverVal
+                            leftLever = 1;
+                            rightLever = 0;
+                        elseif myVal == rightLeverVal
+                            leftLever = 0;
+                            rightLever = 1;
+                        end
+                        
+                        if leftLever == 1 | rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
+                        toc
+                        tempoP5 = toc
+                        if tempoP5 < 60                            
+                            tic
+                            underState5 = 'US5S3'
+                            pushTime = 0;
+                        else
+                            calllib ('lib','PortWrite',1,792,0,0);
+                            underState5 = 'US5S1';
+                        end
+                        end
+                        leftLever = 0;
+                        rightLever = 0;
+                    case 'US5S3' % VERIFICATION QUE LA SOURIS AIT BIEN APPUYE SUR LE BON LEVIER
+                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                       if myVal == leftLeverVal
+                            leftLever = 1;
+                            rightLever = 0;
+                        elseif myVal == rightLeverVal
+                            leftLever = 0;
+                            rightLever = 1;
+                       elseif myVal == nosePokeVal 
+                           leftLever = 0;
+                           rightLever = 0;
+                        end
+                                %%CONTINUER ICI   
+                                    
+                end
+            end
+            
+        case 'stage5'
+            %--- Stage 5 ---
+            stateNum = 5;
             tempo = 0;
             tempo2 = 0;
             pushTime = 0;
             reversalCounter = 0;
-            nbPelletRetrievalP4 = 0;
+            nbPelletRetrievalP5 = 0;
             reversalDone = 0;
-            while reversalCounter < 6 
-                reversalRand = rand()
+            while reversalCounter < 6
+                reversalRand = rand() % rand() est une fonction de matlab donnant un chiffre entre 0 et 1
                 if reversalRand > 0.5 % No reversal
                     reversalDone = 0;
                     leftScreen = 2;
                     rightScreen = 4;
-                    %underState4 = 'US4S2';
+                    %underState5 = 'US5S2';
                 else % Reversal
                     reversalDone = 1;
                     sprintf REVERSAL
                     rightScreen = 2;% NB : ton listrand ne prend que 2 ou 3 comme valeur or là tu u tilises 2 et 4
                     leftScreen = 4;
-                    %underState4 = 'US4S2bis';
+                    %underState5 = 'US5S2bis';
                 end
                 
                 
@@ -346,129 +410,19 @@ drawnow
                 % (essai actuel compris).
                 
                 
-                while y < 41 % A 'for loop' incrementation cannot be controlled here so we used a while loop
-                    
-                    % ceci ne donne pas une fenêtre glissante mais
-                    % une computation par bloc de 40... et ce
-                    % n'est pas ce qu'il faut !! Il faut que ça
-                    % glisse essai après essai en prenant tjrs les
-                    % 40 derniers essais !!! c'est pourquoi on
-                    % commence à computer les perfs qu'à partir du
-                    % 40e essai...
-                    
-                    pause(2)% Delay %NB: 5secs
-                    switch underState4 % So the portWrite's calls are not mistaken
-                        case 'US4S1'
-                            myVal = double(Test704(portVal, rackVal, offsetVal))
-                            if myVal == nosePokeVal
-                                nosePoke = 1;
-                            else
-                                nosePoke = 0;
-                            end
-                            if nosePoke == 1
-                                writeVal = listRand(([y])) % The randomised value of the PortWrite
-                                y = y + 1;
-                                calllib('lib','PortWrite',1,792,0,writeVal); %%ARDUINO on %A REACTIVER /!\ NB : deux outputs pour faire blanc !
-                                tic
-                                underState5 = 'US4S2';
-                            end
-                            nosePoke = 0;
-                        case 'US4S2'
-                            % Variables initialization
-                            rightLever = 0;
-                            leftLever = 0;
-                            myVal = double(Test704(portVal, rackVal, offsetVal))
-                            if myVal == leftLeverVal
-                                leftLever = 1;
-                                rightLever = 0;
-                            elseif myVal == rightLeverVal
-                                leftLever = 0;
-                                rightLever = 1;
-                            elseif myVal == nosePokeVal
-                                leftLever = 0;
-                                rightLever = 0;
-                            end
-                            if writeVal == leftScreen % left screen's on if non reversal(2) /if reversal, right screen's on(4)
-                                if leftLever == 1
-                                    toc % NB : il faut que ça blink durant 15s ou jusqu'à récup pellet (et donc off screens avant!)
-                                    tempo = toc
-                                    tic
-                                    if tempo < 60
-                                        underState4 = 'US4S3'
-                                        pushTime =0;
-                                    else
-                                        calllib('lib','PortWrite',1,792,0,0);%ARDUINO off
-                                        underState4 = 'US4S1'; % The mouse has to nose poke again
-                                    end
-                                elseif rightLever == 1
-                                    sprintf AversiveLed %Aversive LED for 5secs
-                                    underState4 = 'US4S2';
-                                    writeVal
-                                end
-                            elseif writeVal == rightScreen % right screen's on(4)/ if reversal, left screen's on(2)
-                                if rightLever == 1
-                                    toc
-                                    tempo = toc
-                                    tic
-                                    if tempo < 60
-                                        underState4 = 'US4S3'
-                                        pushTime = 0;
-                                    else
-                                        calllib('lib','PortWrite',1,792,0,0);%ARDUINO off
-                                        underState4 = 'US4S1'; % The mouse has to nose poke again
-                                    end
-                                elseif leftLever == 1
-                                    sprintf AversiveLed %Aversive LED for 5secs
-                                    underState4 = 'US4S2';
-                                    writeVal
-                                end
-                            end
-                        case 'US4S3'
-                            myVal = double(Test704(portVal, rackVal, offsetVal))
-                            if myVal == nosePokeVal
-                                nosePoke = 1;
-                                leftLever = 0;
-                                rightLever = 0;
-                            else
-                                nosePoke = 0;
-                                leftLever = 0;
-                                rightLever = 0;
-                            end
-                            if nosePoke == 1
-                                pushTime = pushTime + 1;
-                                toc
-                                tempo2 = toc
-                                if tempo2 <15
-                                    if pushTime == 1
-                                        calllib('lib','PortWrite',1,792,0,pelletVal);
-                                        calllib('lib','PortWrite',1,792,0,0);%ARDUINO & food dispenser off
-                                        nbPelletRetrievalP4 = nbPelletRetrievalP4 + 1
-                                        if nbPelletRetrieval == 32 && reversalDone == 1
-                                            reversalCounter = reversalCounter + 1
-                                            break
-                                        end
-                                    else
-                                        underState4 = 'US4S1';
-                                    end
-                                else
-                                    calllib('lib','PortWrite',1,792,0,0);%ARDUINO off
-                                    underState4 = 'US4S1'; % The mouse has to nose poke again
-                                end
-                            end
-                    end
-                end
-             t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 'tempoP2' 'Last Screen on (1:Left, 2 Right)P3' 'nothing' 'nothing' 'Running reversal? (1:Yes, 0:No)' 'nothing' 'nothing';...
-                     'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' 'leverTimeP2' 'nothing' 'Lever pressP3' 'leverTimeP3' 'time of answer' 'Reversal done' reversalCounter 'nothing';...
-                     'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P2' nbPelletRetrievalP2 'timeOutP2' 'Time out leverP3' 'nothing' 'nothing' 'Successful trials/40' 'nothing' 'percentage';...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP2' 'state duration here' 'nothing' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3' 'Total trials' 'nothing' 'nothing';...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-out' 'time out' 'nothing' 'Last Screen on (1:Left, 2 Right)P4' 'nothing' 'nothing';...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P3' 'nothing' 'nothing' 'Lever pressP4' 'leverTimeP4' 'time of answer';...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing' 'Time out leverP4' 'nothing' 'nothing';...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-outP4' 'time out' 'nothing',...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieved' nbPelletRetrievalP4 'nothing',...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P4' nbPelletRetrievalP4 'timeOutP4',...
-                     'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing'};
-            drawnow
+                %AJOUTER LES DONNEES DE LA PHASE 5%
+                t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 'tempoP2' 'Last Screen on (1:Left, 2 Right)P3' 'nothing' 'nothing' 'Running reversal? (1:Yes, 0:No)' 'nothing' 'nothing';...
+                    'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' 'leverTimeP2' 'nothing' 'Lever pressP3' 'leverTimeP3' 'time of answer' 'Reversal done' reversalCounter 'nothing';...
+                    'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P2' nbPelletRetrievalP2 'timeOutP2' 'Time out leverP3' 'nothing' 'nothing' 'Successful trials/40' 'nothing' 'percentage';...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP2' 'state duration here' 'nothing' 'Pellet retrievedP3' nbPelletRetrievalP3 'tempoP3' 'Total trials' 'nothing' 'nothing';...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-out' 'time out' 'nothing' 'Last Screen on (1:Left, 2 Right)P4' 'nothing' 'nothing';...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P3' 'nothing' 'nothing' 'Lever pressP4' 'leverTimeP4' 'time of answer';...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing' 'Time out leverP4' 'nothing' 'nothing';...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieval time-outP4' 'time out' 'nothing',...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Pellet retrieved' nbPelletRetrievalP4 'nothing',...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)P4' nbPelletRetrievalP4 'timeOutP4',...
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State final durationP3' 'state duration here' 'nothing'};
+                drawnow
             end
     end
     %t.Data = { 'Session timer' nbPelletRetrieval;}
