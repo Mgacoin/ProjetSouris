@@ -8,7 +8,7 @@ function m = luminance (t)
 hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
 loadlibrary('704IO',hfile,'alias','lib')
 
-%-- For portRead --
+%-- For portRead -- 
 % The file has to be created at each Test704() call is Rack, Port and
 % Offset change!
 location = 'C:\Users\admin\Documents\MATLAB\';
@@ -29,15 +29,36 @@ nosePoke = 0; % boolean: false (0) when nose poke is not activated
 leftLever = 0; % idem
 rightLever = 0; % idem
 pelletVal = 1;
-box = 0;
-portVal = 1;
-rackVal = 780;
-offsetVal = -1;
-pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
-nosePokeVal  = 1;
-leftLeverVal = 2;
-rightLeverVal = 4;
 
+%%BOX MANAGEMENT%%
+%\ box = 0;
+%\ portVal = 1;
+%\ rackVal = 780;
+%\ offsetVal = -1;
+%\ pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+%\ nosePokeVal  = 1;
+%\ leftLeverVal = 2;
+%\ rightLeverVal = 4;
+b1 = box;
+b1.portVal = 1;
+b1.rackVal = 780;
+b1.offsetVal = -1;
+b1.pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+b1.nosePokeVal  = 1;
+b1.leftLeverVal = 2;
+b1.rightLeverVal = 4;
+
+b2 = box;
+b2.portVal = 1;
+b2.rackVal = 781;
+b2.offsetVal = -1;
+b2.pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
+b2.nosePokeVal = 8; %par exemple
+b2.leftLeverVal = 16;
+b2.rightLeverVal = 32;
+
+b = b1;
+%%!BOX MANAGEMENT%%
 
 state = 'start';
 underState3 = 'US3S1'; % for "Under State 3, Stage 1"
@@ -58,28 +79,36 @@ while(1)
             stateNum = 1;
             %--- Stage 1 ---
             while nbPelletRetrievalP1 < 5 %&& nbPelletRetrievalBox2 < 5% La premiere ne doit pas compter
-                %                 box = box + 1 % Box's change
-                %                 if box == 3
-                %                     box = 1
-                %                 end
+
+                %%BOX MANAGEMENT%%
+                %\ box = box + 1 % Box's change
+                %\if box == 3
+                %\    box = 1
+                %\end
                 
-                %if box == 1 % The box number is incremented at the end of each loop 1 -> 2 -> 1 -> 2 ...
-                %                 portVal = 1;
-                %                 rackVal = 780;
-                %                 offsetVal = -1;
-                %                 pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
-                %                 nosePokeVal  = 1;
-                %                 leftLeverVal = 2;
-                %                 rightLeverVal = 4;
-                %                 elseif box == 2
-                %                     portVal = 1;
-                %                     rackVal = 781;
-                %                     offsetVal = -1;
-                %                     pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
-                %                     nosePokeVal = 8; %par exemple
-                %                     leftLeverVal = 16;
-                %                     rightLeverVal = 32;
-                %                 end
+                %\if box == 1 % The box number is incremented at the end of each loop 1 -> 2 -> 1 -> 2 ...
+                %\    portVal = 1;
+                %\    rackVal = 780;
+                %\    offsetVal = -1;
+                %\    pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+                %\    nosePokeVal  = 1;
+                %\    leftLeverVal = 2;
+                %\    rightLeverVal = 4;
+                %\elseif box == 2
+                %\    portVal = 1;
+                %\    rackVal = 781;
+                %\    offsetVal = -1;
+                %\    pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
+                %\    nosePokeVal = 8; %par exemple
+                %\    leftLeverVal = 16;
+                %\    rightLeverVal = 32;
+                %\end
+                if b == b1
+                    b = b2;
+                elseif b == b2
+                    b = b1;
+                end
+                %%!BOX MANAGEMENT%%
                 
                 pause(5); % PBR: le programme attend 5 secondes pour continuer
                 calllib('lib','PortWrite',1,792,0,pelletVal);%Activates the output
@@ -431,10 +460,15 @@ while(1)
     %t.Data = { 'Session timer' nbPelletRetrieval;}
     %save('testSave1.mat','nbPelletRetrieval') %The matfile
     %m = matfile('testSave1.mat')
-    %     box = box + 1 % Box's change
-    %     if box == 3
-    %         box = 1
-    %     end
+    
+    
+    %%BOX MANAGEMENT%%
+        box = box + 1 % Box's change    
+        if box == 3
+            box = 1
+        end
+    %%!BOX MANAGEMENT%% 
+        
 end
 end
 
