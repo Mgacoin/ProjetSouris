@@ -3,13 +3,19 @@ classdef box
     %   Detailed explanation goes here
     
     properties
-        portVal
-        rackVal
-        offsetVal
-        pelletVal
+        portReadVal
+        rackReadVal
+        offsetReadVal
         nosePokeVal
         leftLeverVal
         rightLeverVal
+        
+        portWriteVal
+        rackWriteVal
+        offsetWriteVal
+        pelletVal
+        leftScreenVal
+        rightScreenVal
     end
     
     methods
