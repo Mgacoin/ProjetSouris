@@ -285,11 +285,16 @@ while(1)
             stateNum = 4;
             correctTrial = 0;
             tempoP5 = 0;
+            % créer une variable booleen correctiveTrial pour
+            % savoir si quand on vient ici on a déjà eu une
+            % erreur (de base : faux)
+            correctiveTrial = 0;
+            screen = screenonVal; % à voir si screenOnVal est appelé à chaque fois ou pas sinon déplacer sa déclaration
             while correctTrial < 3
                 pause(5) %Delay of 5secs
                 switch underState5
                     case 'US5S1'
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        myVal = double(Test704(portVal, rackVal, offsetVal));
                         if myVal == nosePokevAL
                             nosePoke = 1;
                         else
@@ -297,7 +302,18 @@ while(1)
                         end
                         if nosePoke == 1
                             % POUR AMANDINE: Corrective trial
-                            calllib('lib','PortWrite', 1, 792, 0, screenOnVal);
+                            % créer une variable screen qui se rappelle de l'écran qui
+                            % s'est allumé en US5S1
+                                                        
+                            % tester si correctiveTrial est vrai ou faux
+                            % si faux continuer normal
+                            if correctiveTrial == 0
+                                screen = screenOnVal;
+                                calllib('lib','PortWrite', 1, 792, 0, screen);
+                            % si true allumer l'autre écran screen
+                            else
+                                calllib('lib','PortWrite', 1, 792, 0, screen);
+                            end
                             tic
                             underState5 = 'US5S2';
                         end
@@ -317,8 +333,26 @@ while(1)
                         tempoP5 = toc
                         if tempoP5 < 60                            
                             tic
-                            underState5 = 'US5S3'
+                            underState5 = 'US5S3';
                             pushTime = 0;
+                            % comparer si leftLeverVal = 1 et si l'écran
+                            % gauche (2) est allumé : correctiveTrial = faux et
+                            % correctTrial +1
+                            if leftLever == 1 && screen == 2
+                                correctiveTrial = 0;
+                                correctTrial = correctTrial +1;
+                            % pareil pour rightLeverVal = 1 et l'écran de
+                            % droite (4) : correctiveTrial = faux et
+                            % correctTrial +1
+                            elseif rightLever == 1 && screen == 4
+                                correctiveTrial = 0;
+                                correctTrial = correctTrial +1;
+                            % si aucun des deux allumés ou faux alors revenir
+                            % en US5S1 et correctiveTrial = vrai
+                            else 
+                               underState5 = 'US5S1';
+                               correctiveTrial = 1;
+                            end
                         else
                             calllib ('lib','PortWrite',1,792,0,0);
                             underState5 = 'US5S1';
@@ -327,7 +361,7 @@ while(1)
                         leftLever = 0;
                         rightLever = 0;
                     case 'US5S3' % VERIFICATION QUE LA SOURIS AIT BIEN APPUYE SUR LE BON LEVIER
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                       myVal = double(Test704(portVal, rackVal, offsetVal)) % pourquoi retester si le levier est allumé puisque il vient d'etre activé
                        if myVal == leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
@@ -339,7 +373,7 @@ while(1)
                            rightLever = 0;
                         end
                                 %%CONTINUER ICI   
-                                    
+                       
                 end
             end
             
