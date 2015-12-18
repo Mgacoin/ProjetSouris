@@ -361,19 +361,20 @@ while(1)
                         leftLever = 0;
                         rightLever = 0;
                     case 'US5S3' % VERIFICATION QUE LA SOURIS AIT BIEN APPUYE SUR LE BON LEVIER
-                       myVal = double(Test704(portVal, rackVal, offsetVal)) % pourquoi retester si le levier est allumé puisque il vient d'etre activé
-                       if myVal == leftLeverVal
+
+                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        if myVal == leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
                         elseif myVal == rightLeverVal
                             leftLever = 0;
                             rightLever = 1;
-                       elseif myVal == nosePokeVal 
-                           leftLever = 0;
-                           rightLever = 0;
+                        elseif myVal == nosePokeVal
+                            leftLever = 0;
+                            rightLever = 0;
                         end
-                                %%CONTINUER ICI   
-                       
+                        %%CONTINUER ICI
+                        
                 end
             end
             
@@ -400,7 +401,6 @@ while(1)
                     leftScreen = 4;
                     %underState5 = 'US5S2bis';
                 end
-                
                 
                 % NB : toute la logique de ce qui suit est erronée, sorry :/
                 % déjà y a pas de fenêtre glissante, tu computes par bloc donc
