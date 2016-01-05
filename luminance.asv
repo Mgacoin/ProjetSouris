@@ -211,17 +211,17 @@ while(1)
                     tempoP2 = toc; % measures the time elapsed between lever's pushing and nose poke
                     if tempoP2 <15 && pushTime == 1
                         nbPelletRetrievalP2 = nbPelletRetrievalP2 + 1;
-                        nbPelletRetrievalP2; %?
+                        nbPelletRetrievalP2;
                     elseif tempoP2 > 15 && pushTime == 1
                         timeOutP2 = tempoP2; %In case of time out, this variable is created to be displayed
                         nbPelletRetrievalP2 = 0;
                     end
-                    leverTime = 0; 
+                    leverTime = 0;
                 end
                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 tempoP2;...
                     'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' leverTimeP2 'nothing';...
                     'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)' nbPelletRetrievalP1 timeOutP2;...
-                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';};
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';}
                 
                 %save('testSave1.mat','nbPelletRetrievalP2','-append') %The matfile. "-append" is to add a new variable to the matfile
                 %m = matfile('testSave1.mat')
@@ -243,7 +243,7 @@ while(1)
                 pause(5)% Delay of 5secs
                 switch underState3 % So the portWrite are not mistaken
                     case 'US3S1'
-                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
                         if myVal == nosePokeVal
                             nosePoke = 1;
                         else
@@ -258,7 +258,7 @@ while(1)
                         end
                         nosePoke = 0;
                     case 'US3S2'
-                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
                         if myVal == b.leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
@@ -266,13 +266,13 @@ while(1)
                             leftLever = 0;
                             rightLever = 1;
                         end
-                        if leftLever == 1 || rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
+                        if leftLever == 1 | rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
                             toc
-                            tempoP3 = toc;
+                            tempoP3 = toc
                             %tic
                             if tempoP3 < 60
                                 tic
-                                underState3 = 'US3S3';
+                                underState3 = 'US3S3'
                                 pushTime =0;
                             else
                                 calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%ARDUINO off
@@ -284,7 +284,7 @@ while(1)
                         
                     case 'US3S3'
                         %pause(5)
-                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
                         if myVal == nosePokeVal
                             nosePoke = 1;
                         else
@@ -293,7 +293,7 @@ while(1)
                         if nosePoke == 1
                             pushTime = pushTime + 1;
                             toc
-                            tempo2P3 = toc;
+                            tempo2P3 = toc
                             if tempo2P3 <15 && pushTime == 1
                                 calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,b.pelletVal);
                                 calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%ARDUINO & food dispenser off
@@ -333,11 +333,6 @@ while(1)
             stateNum = 4;
             correctTrial = 0;
             tempoP5 = 0;
-            % créer une variable booleen correctiveTrial pour
-            % savoir si quand on vient ici on a déjà eu une
-            % erreur (de base : faux)
-            correctiveTrial = 0;
-            screen = screenonVal; % à voir si screenOnVal est appelé à chaque fois ou pas sinon déplacer sa déclaration
             while correctTrial < 3
                 pause(5) %Delay of 5secs
                 switch underState5
@@ -350,18 +345,7 @@ while(1)
                         end
                         if nosePoke == 1
                             % POUR AMANDINE: Corrective trial
-                            % créer une variable screen qui se rappelle de l'écran qui
-                            % s'est allumé en US5S1
-                                                        
-                            % tester si correctiveTrial est vrai ou faux
-                            % si faux continuer normal
-                            if correctiveTrial == 0
-                                screen = screenOnVal;
-                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal, screen); %%@Maeva: gerer screen avec l'implémentation de l'objet box (sachant que j'ai créé un écran gauche et un droit)
-                            % si true allumer l'autre écran screen
-                            else
-                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal, screen);
-                            end
+                            calllib('lib','PortWrite', 1, 792, 0, screenOnVal);
                             tic
                             underState5 = 'US5S2';
                         end
@@ -381,26 +365,8 @@ while(1)
                         tempoP5 = toc
                         if tempoP5 < 60                            
                             tic
-                            underState5 = 'US5S3';
+                            underState5 = 'US5S3'
                             pushTime = 0;
-                            % comparer si leftLeverVal = 1 et si l'écran
-                            % gauche (2) est allumé : correctiveTrial = faux et
-                            % correctTrial +1
-                            if leftLever == 1 && screen == 2
-                                correctiveTrial = 0;
-                                correctTrial = correctTrial +1;
-                            % pareil pour rightLeverVal = 1 et l'écran de
-                            % droite (4) : correctiveTrial = faux et
-                            % correctTrial +1
-                            elseif rightLever == 1 && screen == 4
-                                correctiveTrial = 0;
-                                correctTrial = correctTrial +1;
-                            % si aucun des deux allumés ou faux alors revenir
-                            % en US5S1 et correctiveTrial = vrai
-                            else 
-                               underState5 = 'US5S1';
-                               correctiveTrial = 1;
-                            end
                         else
                             calllib ('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);
                             underState5 = 'US5S1';
@@ -409,7 +375,6 @@ while(1)
                         leftLever = 0;
                         rightLever = 0;
                     case 'US5S3' % VERIFICATION QUE LA SOURIS AIT BIEN APPUYE SUR LE BON LEVIER
-
                         myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
                        if myVal == b.leftLeverVal
                             leftLever = 1;
@@ -417,12 +382,12 @@ while(1)
                         elseif myVal == b.rightLeverVal
                             leftLever = 0;
                             rightLever = 1;
-                        elseif myVal == nosePokeVal
-                            leftLever = 0;
-                            rightLever = 0;
+                       elseif myVal == nosePokeVal 
+                           leftLever = 0;
+                           rightLever = 0;
                         end
-                        %%CONTINUER ICI
-                        
+                                %%CONTINUER ICI   
+                                    
                 end
             end
             
@@ -449,6 +414,7 @@ while(1)
                     leftScreen = 4;
                     %underState5 = 'US5S2bis';
                 end
+                
                 
                 % NB : toute la logique de ce qui suit est erronée, sorry :/
                 % déjà y a pas de fenêtre glissante, tu computes par bloc donc
@@ -510,7 +476,14 @@ while(1)
     %t.Data = { 'Session timer' nbPelletRetrieval;}
     %save('testSave1.mat','nbPelletRetrieval') %The matfile
     %m = matfile('testSave1.mat')
-
+    
+    
+    %%BOX MANAGEMENT%%
+        box = box + 1 % Box's change    
+        if box == 3
+            box = 1
+        end
+    %%!BOX MANAGEMENT%% 
         
 end
 end
