@@ -51,7 +51,7 @@ b1.rackWriteVal = 792;
 b1.offsetWriteVal = 0;
 b1.pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
 b1.leftScreenVal = []; %Pour prévoir les écrans
-b1.rightScreenVal = []; %Pour prévoir les écrans
+b1.rightScreenVal = [ ]; %Pour prévoir les écrans
 
 b2 = box;
 b2.portReadVal = 1;

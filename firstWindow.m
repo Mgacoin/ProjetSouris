@@ -6,7 +6,7 @@ function varargout = firstWindow(varargin)
 % loadlibrary(dll,header)
 
 hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
-loadlibrary('704IO',hfile,'alias','libPort')
+%loadlibrary('704IO',hfile,'alias','libPort')
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
