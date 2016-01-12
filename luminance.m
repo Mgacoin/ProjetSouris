@@ -1,11 +1,14 @@
 function m = luminance (t)
+
+% New Branch for Poo
+
 %function [pos, dirPos] = luminance () % to get lateralization graph
 %--- Library declaration ---
 %-- For portWrite --
-hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
+hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'));
 loadlibrary('704IO',hfile,'alias','lib')
 
-%-- For portRead --
+%-- For portRead -- 
 % The file has to be created at each Test704() call is Rack, Port and
 % Offset change!
 location = 'C:\Users\admin\Documents\MATLAB\';
@@ -26,15 +29,50 @@ nosePoke = 0; % boolean: false (0) when nose poke is not activated
 leftLever = 0; % idem
 rightLever = 0; % idem
 pelletVal = 1;
-box = 0;
-portVal = 1;
-rackVal = 780;
-offsetVal = -1;
-pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
-nosePokeVal  = 1;
-leftLeverVal = 2;
-rightLeverVal = 4;
 
+%%BOX MANAGEMENT%% (C'est écrit en dur pour l'instant)
+%\ box = 0;
+%\ portVal = 1;
+%\ rackVal = 780;
+%\ offsetVal = -1;
+%\ pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+%\ nosePokeVal  = 1;
+%\ leftLeverVal = 2;
+%\ rightLeverVal = 4;
+b1 = box;
+b1.portReadVal = 1;
+b1.rackReadVal = 780;
+b1.offsetReadVal = -1;
+b1.nosePokeVal  = 1;
+b1.leftLeverVal = 2;
+b1.rightLeverVal = 4;
+b1.portWriteVal = 1;
+b1.rackWriteVal = 792;
+b1.offsetWriteVal = 0;
+b1.pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+b1.leftScreenVal = []; %Pour prévoir les écrans
+b1.rightScreenVal = [ ]; %Pour prévoir les écrans
+
+b2 = box;
+b2.portReadVal = 1;
+b2.rackReadVal = 781;
+b2.offsetReadVal = -1;
+b2.nosePokeVal = 8; %par exemple
+b2.leftLeverVal = 16;
+b2.rightLeverVal = 32;
+b2.portWriteVal = 1;
+b2.rackWriteVal = 792;
+b2.offsetWriteVal = 0;
+b2.pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
+b2.leftScreenVal = []; %Pour prévoir les écrans
+b2.rightScreenVal = []; %Pour prévoir les écrans
+
+tableb = [b1,b2];
+nbBox = length(tableb);
+currentBox = 0; %Initialized by 0 because of the first incrementation in the state machine
+
+b = tableb(currentBox); % by default
+%%!BOX MANAGEMENT%%
 
 state = 'start';
 underState3 = 'US3S1'; % for "Under State 3, Stage 1"
@@ -55,43 +93,53 @@ while(1)
             stateNum = 1;
             %--- Stage 1 ---
             while nbPelletRetrievalP1 < 5 %&& nbPelletRetrievalBox2 < 5% La premiere ne doit pas compter
-                %                 box = box + 1 % Box's change
-                %                 if box == 3
-                %                     box = 1
-                %                 end
+
+                %%BOX MANAGEMENT%%
+                %\ box = box + 1 % Box's change
+                %\if box == 3
+                %\    box = 1
+                %\end
                 
-                %if box == 1 % The box number is incremented at the end of each loop 1 -> 2 -> 1 -> 2 ...
-                %                 portVal = 1;
-                %                 rackVal = 780;
-                %                 offsetVal = -1;
-                %                 pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
-                %                 nosePokeVal  = 1;
-                %                 leftLeverVal = 2;
-                %                 rightLeverVal = 4;
-                %                 elseif box == 2
-                %                     portVal = 1;
-                %                     rackVal = 781;
-                %                     offsetVal = -1;
-                %                     pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
-                %                     nosePokeVal = 8; %par exemple
-                %                     leftLeverVal = 16;
-                %                     rightLeverVal = 32;
-                %                 end
+                %\if box == 1 % The box number is incremented at the end of each loop 1 -> 2 -> 1 -> 2 ...
+                %\    portVal = 1;
+                %\    rackVal = 780;
+                %\    offsetVal = -1;
+                %\    pelletVal = 1;% 2 et 3 sont assignés aux ARDUINO
+                %\    nosePokeVal  = 1;
+                %\    leftLeverVal = 2;
+                %\    rightLeverVal = 4;
+                %\elseif box == 2
+                %\    portVal = 1;
+                %\    rackVal = 781;
+                %\    offsetVal = -1;
+                %\    pelletVal = 4; % 5 et 6 sont assignés aux ARDUINO
+                %\    nosePokeVal = 8; %par exemple
+                %\    leftLeverVal = 16;
+                %\    rightLeverVal = 32;
+                %\end
+                
+                currentBox = currentBox + 1;
+                if currentBox > nbBox
+                    currentBox = 1;
+                end
+                b = tableb(currentBox);
+                
+                %%!BOX MANAGEMENT%%
                 
                 pause(5); % PBR: le programme attend 5 secondes pour continuer
-                calllib('lib','PortWrite',1,792,0,pelletVal);%Activates the output
-                calllib('lib','PortWrite',1,792,0,0);%Deactivates the output
+                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,b.pelletVal);%Activates the output
+                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%Deactivates the output
                 
-                myVal = double(Test704(portVal, rackVal, offsetVal)) %où les valeurs sont modifiés dans le if box == ...
+                myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal)); %où les valeurs sont modifiés dans le if box == ...
                 if myVal == nosePokeVal
                     nosePoke = 1; %to know how much pellet retrieval we have
                 else
                     nosePoke = 0;
                 end
                 if nosePoke == 1
-                    %if box == 1  %nosePoke est la valeur récupérée par mex
-                    nbPelletRetrievalP1 = nbPelletRetrievalP1 + 1
-                    % elseif box == 2
+                    %if currentBox == 1  %nosePoke est la valeur récupérée par mex
+                    nbPelletRetrievalP1 = nbPelletRetrievalP1 + 1;
+                    % elseif currentBox == 2
                     %     nbPelletRetrievalBox2 = nbPelletRetrievalBox2 + 1
                     % end
                 end
@@ -103,7 +151,7 @@ while(1)
             end
             % nbPelletRetrieval = 0; %A ce stade, nbPelletRetrievalP1 = 5
             while nbPelletRetrievalP1 < 10
-                myVal = double(Test704(portVal,rackVal,offsetVal))
+                myVal = double(Test704(b.portReadVal,b.rackReadVal,b.offsetReadVal));
                 if myVal == nosePokeVal
                     nosePoke = 1;
                 else
@@ -111,8 +159,8 @@ while(1)
                 end
                 if nosePoke == 1 %Dois-t'on différencier ces deux actions?
                     nbPelletRetrievalP1 = nbPelletRetrievalP1 + 1;
-                    calllib('lib','PortWrite',1,792,0,pelletVal);
-                    calllib('lib','PortWrite',1,792,0,0);
+                    calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,b.pelletVal);
+                    calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);
                 end
                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing';...
                     'Current state' stateNum 'nothing' 'State final durationP1' 'duration here' 'nothing';...
@@ -130,20 +178,20 @@ while(1)
             tempoP2 = 0;
             timeOutP2 = 0;
             while nbPelletRetrievalP2<10
-                myVal = double(Test704(portVal, rackVal, offsetVal))
-                if myVal == leftLeverVal
+                myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
+                if myVal == b.leftLeverVal
                     leftLever = 1;
                     rightLever = 0;
-                elseif myVal == rightLeverVal
+                elseif myVal == b.rightLeverVal
                     leftLever = 0;
                     rightLever = 1;
                 end
                 
-                if leftLever == 1| rightLever == 1 % NB : il faut que ça blink !
+                if leftLever == 1 || rightLever == 1 % NB : il faut que ça blink !
                     leverTimeP2 = leverTimeP2 + 1;
                     if leverTimeP2 == 1
-                        calllib('lib','PortWrite',1,792,0,pelletVal); % pellet dispensation
-                        calllib('lib','PortWrite',1,792,0,0);
+                        calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,b.pelletVal); % pellet dispensation
+                        calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);
                     end
                     tic %on démarre le timer pour connaitre de temps de récup
                     pushTime = 0; % To avoid nbPelletRetrieval to be incremented when nothing is retrieved (in case of nose pokes)
@@ -160,20 +208,20 @@ while(1)
                 if nosePoke == 1 % this condition cannot be included in the previous one
                     pushTime = pushTime + 1;
                     toc
-                    tempoP2 = toc % measures the time elapsed between lever's pushing and nose poke
+                    tempoP2 = toc; % measures the time elapsed between lever's pushing and nose poke
                     if tempoP2 <15 && pushTime == 1
-                        nbPelletRetrievalP2 = nbPelletRetrievalP2 + 1
-                        nbPelletRetrievalP2
+                        nbPelletRetrievalP2 = nbPelletRetrievalP2 + 1;
+                        nbPelletRetrievalP2; %?
                     elseif tempoP2 > 15 && pushTime == 1
                         timeOutP2 = tempoP2; %In case of time out, this variable is created to be displayed
                         nbPelletRetrievalP2 = 0;
                     end
-                    leverTime = 0;
+                    leverTime = 0; 
                 end
                 t.Data = { 'Session timer' 'session timer here' 'nothing' 'Pellet retrievedP1' nbPelletRetrievalP1 'nothing' 'Pellet retrievedP2' nbPelletRetrievalP2 tempoP2;...
                     'Current state' stateNum 'nothing' 'State final duration P1' 'state duration here' 'nothing' 'Lever pressP2' leverTimeP2 'nothing';...
                     'State timer' 'state timer here' 'nothing' 'nothing' 'nothing' 'nothing' 'Total pellet retrieved (w/ time out)' nbPelletRetrievalP1 timeOutP2;...
-                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';}
+                    'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'nothing' 'State finale duration' 'state duration here' 'nothing';};
                 
                 %save('testSave1.mat','nbPelletRetrievalP2','-append') %The matfile. "-append" is to add a new variable to the matfile
                 %m = matfile('testSave1.mat')
@@ -188,14 +236,14 @@ while(1)
             tempoP3 = 0;
             tempo2P3 = 0;
             pushTime = 0;
-            bothScreensOnVal = leftScreenVal + rightScreenVal; % To switch on both screens simultaneously
+            bothScreensOnVal = b.leftScreenVal + b.rightScreenVal; % To switch on both screens simultaneously
             %listRand = randomizer() % NB : fonction erronée comme on en a parlé !! il faut que le pseudo-random se fasse sur chaque essai et non a priori
             nbPelletRetrievalP3 = 0;
             while nbPelletRetrievalP3 < 10
                 pause(5)% Delay of 5secs
                 switch underState3 % So the portWrite are not mistaken
                     case 'US3S1'
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
                         if myVal == nosePokeVal
                             nosePoke = 1;
                         else
@@ -203,31 +251,31 @@ while(1)
                         end
                         if nosePoke == 1
                             %writeVal = listRand(([nbPelletRetrievalP3])) % The randomised value of the PortWrite %NB: Les deux écrans s'allument à ce stade.
-                            %calllib('lib','PortWrite',1,792,0,writeVal); %ARDUINO on %A REACTIVER
-                            calllib('lib','PortWrite',1,792,0,bothScreensOnVal); % Both screens switch on
+                            %calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,writeVal); %ARDUINO on %A REACTIVER
+                            calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,bothScreensOnVal); % Both screens switch on
                             tic
                             underState3 = 'US3S2';
                         end
                         nosePoke = 0;
                     case 'US3S2'
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
-                        if myVal == leftLeverVal
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
+                        if myVal == b.leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
-                        elseif myVal == rightLeverVal
+                        elseif myVal == b.rightLeverVal
                             leftLever = 0;
                             rightLever = 1;
                         end
-                        if leftLever == 1 | rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
+                        if leftLever == 1 || rightLever == 1 % One of the levers is pressed % NB : il faut que ça blink !
                             toc
-                            tempoP3 = toc
+                            tempoP3 = toc;
                             %tic
                             if tempoP3 < 60
                                 tic
-                                underState3 = 'US3S3'
+                                underState3 = 'US3S3';
                                 pushTime =0;
                             else
-                                calllib('lib','PortWrite',1,792,0,0);%ARDUINO off
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%ARDUINO off
                                 underState3 = 'US3S1'; % The mouse has to nose poke again
                             end
                         end
@@ -236,7 +284,7 @@ while(1)
                         
                     case 'US3S3'
                         %pause(5)
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal));
                         if myVal == nosePokeVal
                             nosePoke = 1;
                         else
@@ -245,14 +293,14 @@ while(1)
                         if nosePoke == 1
                             pushTime = pushTime + 1;
                             toc
-                            tempo2P3 = toc
+                            tempo2P3 = toc;
                             if tempo2P3 <15 && pushTime == 1
-                                calllib('lib','PortWrite',1,792,0,pelletVal);
-                                calllib('lib','PortWrite',1,792,0,0);%ARDUINO & food dispenser off
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,b.pelletVal);
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%ARDUINO & food dispenser off
                                 nbPelletRetrievalP3 = nbPelletRetrievalP3 + 1
                                 underState3 = 'US3S1';
                             else
-                                calllib('lib','PortWrite',1,792,0,0);%ARDUINO off
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);%ARDUINO off
                                 underState3 = 'US3S1'; % The mouse has to nose poke again NB : et on remet compteur pellets retrieved à 0!
                             end
                         end
@@ -294,7 +342,7 @@ while(1)
                 pause(5) %Delay of 5secs
                 switch underState5
                     case 'US5S1'
-                        myVal = double(Test704(portVal, rackVal, offsetVal));
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
                         if myVal == nosePokevAL
                             nosePoke = 1;
                         else
@@ -309,21 +357,21 @@ while(1)
                             % si faux continuer normal
                             if correctiveTrial == 0
                                 screen = screenOnVal;
-                                calllib('lib','PortWrite', 1, 792, 0, screen);
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal, screen); %%@Maeva: gerer screen avec l'implémentation de l'objet box (sachant que j'ai créé un écran gauche et un droit)
                             % si true allumer l'autre écran screen
                             else
-                                calllib('lib','PortWrite', 1, 792, 0, screen);
+                                calllib('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal, screen);
                             end
                             tic
                             underState5 = 'US5S2';
                         end
                         nosePoke = 0;
                     case 'US5S2'
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
-                        if myVal == leftLeverVal
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
+                        if myVal == b.leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
-                        elseif myVal == rightLeverVal
+                        elseif myVal == b.rightLeverVal
                             leftLever = 0;
                             rightLever = 1;
                         end
@@ -354,7 +402,7 @@ while(1)
                                correctiveTrial = 1;
                             end
                         else
-                            calllib ('lib','PortWrite',1,792,0,0);
+                            calllib ('lib','PortWrite',b.portWriteVal,b.rackWriteVal,b.offsetWriteVal,0);
                             underState5 = 'US5S1';
                         end
                         end
@@ -362,11 +410,11 @@ while(1)
                         rightLever = 0;
                     case 'US5S3' % VERIFICATION QUE LA SOURIS AIT BIEN APPUYE SUR LE BON LEVIER
 
-                        myVal = double(Test704(portVal, rackVal, offsetVal))
-                        if myVal == leftLeverVal
+                        myVal = double(Test704(b.portReadVal, b.rackReadVal, b.offsetReadVal))
+                       if myVal == b.leftLeverVal
                             leftLever = 1;
                             rightLever = 0;
-                        elseif myVal == rightLeverVal
+                        elseif myVal == b.rightLeverVal
                             leftLever = 0;
                             rightLever = 1;
                         elseif myVal == nosePokeVal
@@ -462,10 +510,8 @@ while(1)
     %t.Data = { 'Session timer' nbPelletRetrieval;}
     %save('testSave1.mat','nbPelletRetrieval') %The matfile
     %m = matfile('testSave1.mat')
-    %     box = box + 1 % Box's change
-    %     if box == 3
-    %         box = 1
-    %     end
+
+        
 end
 end
 

@@ -6,7 +6,7 @@ function varargout = firstWindow(varargin)
 % loadlibrary(dll,header)
 
 hfile =(fullfile(matlabroot, 'lib','win64', '704IO.h'))
-loadlibrary('704IO',hfile,'alias','libPort')
+%loadlibrary('704IO',hfile,'alias','libPort')
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -187,7 +187,15 @@ close(gcf);%on devrait pouvoir annuler la box validée peut etre?
 
 % --- Executes on button press in buParameters.
 function buParameters_Callback(hObject, eventdata, handles)
-openfig(setParametersWindow);
+global protocole
+contents = get(handles.popupProtocole,'String'); 
+protocole = contents{get(handles.popupProtocole,'Value')};
+if isempty(protocole) %value check
+    set(handles.textErrorChooseProtocole,'visible','on');
+else 
+    set(handles.textErrorChooseProtocole,'visible','off'); 
+    openfig(setParametersWindowTest); %%"Windowtest" for TEST
+end
 
 
 % --- Executes on button press in buVariables.
@@ -195,3 +203,26 @@ function buVariables_Callback(hObject, eventdata, handles)
 % hObject    handle to buVariables (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on selection change in popupBox.
+function popupBox_Callback(hObject, eventdata, handles)
+% hObject    handle to popupBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns popupBox contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from popupBox
+
+
+% --- Executes during object creation, after setting all properties.
+function popupBox_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to popupBox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: popupmenu controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

@@ -63,7 +63,17 @@ tabMonitoringFlex1 = uitab(tabgp, 'Title', 'Box1');
     'String','See Lateralization Graph',...
     'Callback',@callLum);
     
+    buPelletFollow = uicontrol('Style','pushButton',...
+    'parent',tabMonitoringFlex1,...
+    'Backgroundcolor',[0.94 0.94 0.94],...
+    'Position',[420 470 150 30],...
+    'visible', 'on', ...
+    'String','See Pellet Distribution',...
+    'Callback',@PeletFollow);
 
+     lateralizeAxes1 = axes('parent',tabMonitoringFlex1,...
+         'Position',[0.1,0.1,0.7,0.7]);
+     axis off
 
 
 function varargout = monitoringWindowFlexibility_OutputFcn(hObject, eventdata, handles) 
@@ -93,4 +103,8 @@ end
 % set (tabgp,'SelectedTab',tabMonitoringFlex1);
 drawnow
 
+function PeletFollow(src,event)
+%plot
+axis on
 
+drawnow
