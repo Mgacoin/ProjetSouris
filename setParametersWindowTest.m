@@ -772,6 +772,7 @@ function buNewParameters_Callback(hObject, eventdata, handles)
 hideChooseBox(handles);  %Hide the choosing box panel
 set(handles.popupParameters,'Value',1)
 set(handles.pNumBox,'visible','on');
+set(handles.pChoiceIO,'visible','off');
 % hObject    handle to buNewParameters (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
@@ -1977,4 +1978,3 @@ function figure1_CloseRequestFcn(hObject, eventdata, handles)
 
 % Hint: delete(hObject) closes the figure
 delete(hObject);
-
