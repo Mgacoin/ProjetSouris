@@ -1,5 +1,8 @@
 function varargout = setParametersWindow(varargin)
 
+global currentBox
+currentBox = 0
+
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
@@ -841,6 +844,7 @@ function popupChooseBox_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns popupChooseBox contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from popupChooseBox
 
+
 % --- Executes during object creation, after setting all properties.
 function popupChooseBox_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to popupChooseBox (see GCBO)
@@ -885,7 +889,7 @@ function buPrevBox_Callback(hObject, eventdata, handles)
 function buNextBox_Callback(hObject, eventdata, handles)
 %%Changer de boite (suivante)
 
-global nbBox
+%global currentBox
 
 global pop1
 global pop2
@@ -949,7 +953,7 @@ for i = 1:length(list)
    disp(list(i))
    dlmwrite('MyFile.csv',list(i),'delimiter','','-append')
 end
-
+%currentBox = currentBox + 1
 
 % --- Executes on button press in buDeleteBox.
 function buDeleteBox_Callback(hObject, eventdata, handles)
@@ -977,6 +981,8 @@ function buSaveTab_Callback(hObject, eventdata, handles)
 %winopen('SettingsDB.xlsx');
 %%Fonction de Sauvegarde
 set(handles.textSaved,'Visible','on'); %%Dans la fonction de sauvegarde
+
+%global currentBox
 
 global pop1
 global pop2
