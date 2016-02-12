@@ -50,6 +50,10 @@ tabMonitoringFlex1 = uitab(tabgp, 'Title', 'Box1');
     'Position',[90 470 150 30],...
     'visible', 'on', ...
     'String','See Performance Graph');    
+
+     lateralizeAxes1 = axes('parent',tabMonitoringFlex1,...
+         'Position',[0.1,0.1,0.7,0.7]);
+     axis off
     
     buLateralizeBox1 = uicontrol('Style','pushButton',...
     'parent',tabMonitoringFlex1,...
@@ -59,6 +63,14 @@ tabMonitoringFlex1 = uitab(tabgp, 'Title', 'Box1');
     'String','See Lateralization Graph',...
     'Callback',@callLum);
     
+    buPelletFollow = uicontrol('Style','pushButton',...
+    'parent',tabMonitoringFlex1,...
+    'Backgroundcolor',[0.94 0.94 0.94],...
+    'Position',[420 470 150 30],...
+    'visible', 'on', ...
+    'String','See Pellet Distribution',...
+    'Callback',@PeletFollow);
+
      lateralizeAxes1 = axes('parent',tabMonitoringFlex1,...
          'Position',[0.1,0.1,0.7,0.7]);
      axis off
@@ -68,13 +80,31 @@ function varargout = monitoringWindowFlexibility_OutputFcn(hObject, eventdata, h
 varargout{1} = handles.output;
 
 function callLum(src,event)
-%plot
+
 axis on
-[pos, dirPos] = luminance () % AU LIEU DE RELANCER LUMINANCE(), CHERCHER LES DONNEES DANS LA MATRICE
-plot(lateralizePlot1,pos,dirPos,'+');
+[Pos, DirPos, Correct] = testLateralization () % AU LIEU DE RELANCER LUMINANCE(), CHERCHER LES DONNEES DANS LA MATRICE
+
+
+for i = 1:length(Pos)
+    if Correct(i) == Pos(i)
+        c = 'b+';
+    else
+        c = 'r+';
+    end
+
+    plot(DirPos(i),Pos(i),c)
+    axis([0 1 0 1])
+    set(gca,'YTick',[0 0.2 0.4 0.6 0.8 1]) 
+    ylabel('Gauche            -            Droite');
+    hold on
+end
 
 %switch to plot tab
- set (tabgp,'SelectedTab',tabMonitoringFlex1);
+% set (tabgp,'SelectedTab',tabMonitoringFlex1);
 drawnow
 
+function PeletFollow(src,event)
+%plot
+axis on
 
+drawnow
